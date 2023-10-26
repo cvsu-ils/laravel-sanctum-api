@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\API\AuthController;
+use Illuminate\Http\Response;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +14,17 @@ use App\Http\Controllers\Api\AuthController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/test', function() {
-    return response()->json(['message' => "Hello World!"], Response::HTTP_OK);
+Route::get('/', function() {
+    return response()->json("CvSU ILS API v2.0", Response::HTTP_OK);
 });
+Route::post('/oauth/token', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::resource('patrons', 'App\Http\Controllers\API\Koha\PatronController')
+        ->except(['store', 'create', 'edit', 'update', 'destroy']);
+    Route::post('/oauth/revoke', [AuthController::class, 'logout']);
 });
-Route::post('/login', [AuthController::class, 'login']);
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Endpoint not exists.'], Response::HTTP_NOT_FOUND);
+});

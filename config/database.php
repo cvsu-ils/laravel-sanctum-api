@@ -91,6 +91,26 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'koha' => [
+            'driver' => 'mysql',
+            'url' => env('KOHA_DATABASE_URL'),
+            'host' => env('KOHA_DB_HOST', '127.0.0.1'),
+            'port' => env('KOHA_DB_PORT', '3306'),
+            'database' => env('KOHA_DB_DATABASE', 'forge'),
+            'username' => env('KOHA_DB_USERNAME', 'forge'),
+            'password' => env('KOHA_DB_PASSWORD', ''),
+            'unix_socket' => env('KOHA_DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
     ],
 
     /*
